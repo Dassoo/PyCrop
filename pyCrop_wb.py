@@ -100,22 +100,13 @@ def cropping(inputPath, outputPath, l_padding, t_padding, r_padding, b_padding, 
             # -- applicazione threshold
             _, th = cv2.threshold(dil, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
             # -- identificazione contorni e area maggiore (quella dell'oggetto in questione)
-            _, contours, _= cv2.findContours(th, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+            th_er1 = cv2.bitwise_not(th)
+            _, contours, _= cv2.findContours(th_er1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
             areas = [cv2.contourArea(c) for c in contours]
             max_index = np.argmax(areas)
             cnt=contours[max_index]
-            # -- assegnazione e stampa parametri ritaglio
             x,y,w,h = cv2.boundingRect(cnt)
-
-            # -- crea uno switch per attivare o meno l'inversione pixels (si in caso di fondo chiaro, no in caso di fondo scuro)
-            # -- se le coordinate rilevate sono sostanzialmente errate attiva l'inversione e ripeti il processo (da ottimizzare TBD)
-            if(x<500):
-                th_er1 = cv2.bitwise_not(th)
-                _, contours, _= cv2.findContours(th_er1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-                areas = [cv2.contourArea(c) for c in contours]
-                max_index = np.argmax(areas)
-                cnt=contours[max_index]
-                x,y,w,h = cv2.boundingRect(cnt)
 
             # -- ottenimento parametri immagine
             height, width, channel = img.shape  
