@@ -45,17 +45,6 @@ def conversion(inputPath, outputPath):
     return outputFilename
 
 
-# -- algoritmo per il bilanciamento del bianco (Greyworld)
-def white_balance(img):
-    result = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
-    avg_a = np.average(result[:, :, 1])
-    avg_b = np.average(result[:, :, 2])
-    result[:, :, 1] = result[:, :, 1] - ((avg_a - 128) * (result[:, :, 0] / 255.0) * 1.1)
-    result[:, :, 2] = result[:, :, 2] - ((avg_b - 128) * (result[:, :, 0] / 255.0) * 1.1)
-    result = cv2.cvtColor(result, cv2.COLOR_LAB2BGR)
-    return result
-
-
 # -- export in formato TIFF
 def tiffExport(inputPath, outputPath, outputFilename):
     processing = 1
@@ -75,6 +64,17 @@ def tiffExport(inputPath, outputPath, outputFilename):
             processing += 1
     print('Immagini esportate in formato TIFF con successo!')
     print(' ')
+
+
+# -- algoritmo per il bilanciamento del bianco (Greyworld)
+def white_balance(img):
+    result = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+    avg_a = np.average(result[:, :, 1])
+    avg_b = np.average(result[:, :, 2])
+    result[:, :, 1] = result[:, :, 1] - ((avg_a - 128) * (result[:, :, 0] / 255.0) * 1.1)
+    result[:, :, 2] = result[:, :, 2] - ((avg_b - 128) * (result[:, :, 0] / 255.0) * 1.1)
+    result = cv2.cvtColor(result, cv2.COLOR_LAB2BGR)
+    return result
 
 
 # -- processamento immagine, riconoscimento e ritaglio
@@ -100,12 +100,22 @@ def cropping(inputPath, outputPath, l_padding, t_padding, r_padding, b_padding, 
             # -- applicazione threshold
             _, th = cv2.threshold(dil, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
             # -- identificazione contorni e area maggiore (quella dell'oggetto in questione)
-            th_er1 = cv2.bitwise_not(th)
-            _, contours, _= cv2.findContours(th_er1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            _, contours, _= cv2.findContours(th, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
             areas = [cv2.contourArea(c) for c in contours]
             max_index = np.argmax(areas)
             cnt=contours[max_index]
+            # -- assegnazione e stampa parametri ritaglio
             x,y,w,h = cv2.boundingRect(cnt)
+
+            # -- crea uno switch per attivare o meno l'inversione pixels (si in caso di fondo chiaro, no in caso di fondo scuro)
+            # -- se le coordinate rilevate sono sostanzialmente errate attiva l'inversione e ripeti il processo (da ottimizzare TBD)
+            if(x<500):
+                th_er1 = cv2.bitwise_not(th)
+                _, contours, _= cv2.findContours(th_er1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                areas = [cv2.contourArea(c) for c in contours]
+                max_index = np.argmax(areas)
+                cnt=contours[max_index]
+                x,y,w,h = cv2.boundingRect(cnt)
 
             # -- ottenimento parametri immagine
             height, width, channel = img.shape  
@@ -145,10 +155,10 @@ def cropping(inputPath, outputPath, l_padding, t_padding, r_padding, b_padding, 
             height, width, channel = cropped_image.shape
             # -- rotazione immagine in base all'applicazione
             cropped_image = imgRotation(width, height, file, cropped_image, application)
-
+            
             # -- applicazione bilanciamento del bianco
             balanced_image = white_balance(cropped_image)
-            
+
             # -- salvataggio immagine ritagliata e JSON con metadati
             jsonExport(outputPath, width, height, file, imgQuality, outputFilename) 
             cv2.imwrite(os.path.join(outputPath+'/cropped', file), balanced_image)
@@ -317,12 +327,12 @@ def reFolder(inputPath, outputPath, outputFilename, cpPath):
     #navigation="TABBED",
     )   
 def main():
-    # -- path cartelle di input e output da assegnare
+    # -- path cartelle di input e output da assegnare poi da Terminale
     inputPath = '' 
     outputPath = ''
-    # -- color profile path (.pp3) da assegnare
+    # -- color profile path (.pp3) da assegnare poi da Terminale
     cpPath = ''
-    # -- padding immagine da assegnare (h = horizontal; v = vertical)
+    # -- padding immagine da assegnare poi da Terminale (h = horizontal; v = vertical)
     t_padding = ''
     b_padding = ''
     l_padding = ''
@@ -607,7 +617,10 @@ def main():
         
         
         if(args['Formato TIFF'] == True):
-            inputP = outputPath+'/jpg_export'
+            if(cpPath == True):
+                inputP = outputPath+'/jpg_export'
+            else: 
+                inputP = outputPath+'/cropped'
             outputP = outputPath+'/tiff_export'
             tiffExport(inputP, outputP, outputFilename)
 
@@ -633,10 +646,10 @@ def main():
     # -- cancella cartelle temporanee
     try:
         shutil.rmtree(outputPath+'/cropped')
-        if(args['Formato JPG'] == False or len(os.listdir(outputPath+'/jpg_export')) == 0):
-            shutil.rmtree(outputPath+'/jpg_export')
-        if(args['Formato TIFF'] == False or len(os.listdir(outputPath+'/tiff_export')) == 0):
-            shutil.rmtree(outputPath+'/tiff_export')
+        #if(args['Formato JPG'] == False or len(os.listdir(outputPath+'/jpg_export')) == 0):
+        shutil.rmtree(outputPath+'/jpg_export')
+        #if(args['Formato TIFF'] == False or len(os.listdir(outputPath+'/tiff_export')) == 0):
+        shutil.rmtree(outputPath+'/tiff_export')
     except OSError as e:
         print("Errore: %s - %s." % (e.filename, e.strerror))
         logger.error(e)
