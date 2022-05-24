@@ -16,3 +16,5 @@ Features:
  - Color profile application (.pp3)
  - White balancing (greyscale method)
  - Json metadata export
+
+"Sample_images" contains some JPGs that can be used for testing the software, while the "examples" folder shows a comparison before-after the whitebalancing.
