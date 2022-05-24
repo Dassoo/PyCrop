@@ -66,19 +66,21 @@ def tiffExport(inputPath, outputPath, outputFilename):
     print(' ')
 
 
-# -- algoritmo per il bilanciamento del bianco (Greyworld)
-def white_balance(img):
-    result = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
-    avg_a = np.average(result[:, :, 1])
-    avg_b = np.average(result[:, :, 2])
-    result[:, :, 1] = result[:, :, 1] - ((avg_a - 128) * (result[:, :, 0] / 255.0) * 1.1)
-    result[:, :, 2] = result[:, :, 2] - ((avg_b - 128) * (result[:, :, 0] / 255.0) * 1.1)
-    result = cv2.cvtColor(result, cv2.COLOR_LAB2BGR)
-    return result
+# -- bilanciamento del bianco
+def white_balance(img, whiteBalance):
+    # -- bilanciamento automatico
+    if(whiteBalance == None):
+        os.system('./autowhite '+img+' '+img)
+    # -- bilanciamento manuale (inserimento valore bianco rgb da bilanciare rispetto al bianco puro)
+    else:
+        try:
+            os.system('./whitebalance -c "rgb('+whiteBalance+')" '+img+' '+img)
+        except IOError as e:
+            print("Errore: %s - %s." % (e.filename, e.strerror))
 
 
 # -- processamento immagine, riconoscimento e ritaglio
-def cropping(inputPath, outputPath, l_padding, t_padding, r_padding, b_padding, imgQuality, application, imgViewer, outputFilename):
+def cropping(inputPath, outputPath, l_padding, t_padding, r_padding, b_padding, imgQuality, application, imgViewer, outputFilename, whiteBalance):
     processing = 1
     print('Processamento immagini in corso...')
     # -- ciclo che processa tutti i file nella cartella delle immagini convertite
@@ -146,13 +148,17 @@ def cropping(inputPath, outputPath, l_padding, t_padding, r_padding, b_padding, 
             height, width, channel = cropped_image.shape
             # -- rotazione immagine in base all'applicazione
             cropped_image = imgRotation(width, height, file, cropped_image, application)
-            
-            # -- applicazione bilanciamento del bianco
-            balanced_image = white_balance(cropped_image)
 
             # -- salvataggio immagine ritagliata e JSON con metadati
             jsonExport(outputPath, width, height, file, imgQuality, outputFilename) 
-            cv2.imwrite(os.path.join(outputPath+'/cropped', file), balanced_image)
+
+            # -- salvataggio file
+            file_path = os.path.join(outputPath+'/cropped', file)
+            cv2.imwrite(file_path, cropped_image)
+
+            # -- applicazione bilanciamento del bianco
+            white_balance(file_path, whiteBalance)
+            
     print('Immagini processate con successo!')
 
 
@@ -219,16 +225,13 @@ def integrityCheck(inputPath, outputPath, l_padding, t_padding, r_padding, b_pad
 
 
 # -- applicazione profilo colore
-def cpApplication(inputPath, outputPath, cpPath, forceProcessing, exportFormat):
+def cpApplication(inputPath, outputPath, cpPath, exportFormat):
     if(not cpPath == False):
         print(' ')
         print('Applicazione profilo colore...')
         # -- applicazione profilo colore
         # -- '-o' = output; '-p' = color profile; '-Y' = force processing (sovrascrivi); '-c' = input
-        if(forceProcessing == True):
-            os.system('rawtherapee-cli -o '+outputPath+'/jpg_export -p '+cpPath+' -Y -c '+outputPath+'/cropped')
-        else:
-            os.system('rawtherapee-cli -o '+outputPath+'/jpg_export -p '+cpPath+' -c '+outputPath+'/cropped')
+        os.system('rawtherapee-cli -o '+outputPath+'/jpg_export -p '+cpPath+' -Y -c '+outputPath+'/cropped')
 
         print('Profilo colore applicato con successo!')
         print(' ')
@@ -328,10 +331,10 @@ def main():
     b_padding = ''
     l_padding = ''
     r_padding = ''
-    # -- forceProcessing sovrascrive dati già presenti con lo stesso nome
-    forceProcessing = True
     # -- formato di esportazione
     exportFormat = ''
+    # -- bilanciamento bianco
+    whiteBalance = ''
     # -- parametro qualità immagini
     imgQuality = 0
     # -- variabile per il conteggio degli elementi processati in ogni ciclo
@@ -417,13 +420,10 @@ def main():
     optional=fprocessing.add_argument_group('Parametri facoltativi')
 
     optional.add_argument(
-        '--fp', 
+        '--whiteBalance', 
         action="store", 
-        widget='Dropdown', 
-        choices=choice, 
-        default='yes', 
-        dest='Forza processo', 
-        help='Sovrascrizione file'
+        dest='Bilanciamento colore', 
+        help='Inserisci il bianco da bilanciare in formato RGB'
     )
 
     optional.add_argument(
@@ -487,7 +487,7 @@ def main():
     args = vars(parser.parse_args())
     inputPath = args['Percorso di input']
     outputPath = args['Percorso di output']
-    forceProcessing = args['Forza processo']
+    whiteBalance = args['Bilanciamento colore']
     cpPath = args['File profilo colore']
     if(args['Formato JPG']):
         exportFormat = '.jpg'
@@ -517,19 +517,6 @@ def main():
         else: 
             print('▄ Percorso di output: ',args['Percorso di output'])
 
-    if args['Forza processo']:
-        if(forceProcessing == 'yes'):
-            forceProcessing == True
-            print('▄ Forza processo: YES')
-        elif(forceProcessing == 'no'):
-            forceProcessing == False
-            print('▄ Forza processo: NO')
-        else:
-            print('▄ Opzione di sovrascrizione non valida')
-            print(' ')
-    else:
-        forceProcessing == False
-
     print('▄ Qualità immagine: ',args['Qualità immagine'])
 
     if args['Formato JPG'] and args['Formato TIFF']:
@@ -538,6 +525,11 @@ def main():
         print('▄ Esportazione in: JPG')
     elif args['Formato TIFF']:
         print('▄ Esportazione in: TIFF')
+
+    if args['Bilanciamento colore']:
+        print('▄ Bilanciamento bianco: ',args['Bilanciamento colore'])
+    else:
+        print('▄ Bilanciamento bianco: automatico')
 
     if args['File profilo colore']:
         if(os.path.exists(args['File profilo colore'])):
@@ -600,11 +592,11 @@ def main():
         
         # -- esecuzione
         outputFilename = conversion(inputPath, outputPath)
-        cropping(inputPath, outputPath, l_padding, t_padding, r_padding, b_padding, imgQuality, application, imgViewer, outputFilename)
+        cropping(inputPath, outputPath, l_padding, t_padding, r_padding, b_padding, imgQuality, application, imgViewer, outputFilename, whiteBalance)
         integrityCheck(inputPath, outputPath, l_padding, t_padding, r_padding, b_padding)
 
         shutil.rmtree(outputPath+'/temp')
-        cpApplication(inputPath, outputPath, cpPath, forceProcessing, exportFormat)
+        cpApplication(inputPath, outputPath, cpPath, exportFormat)
         
         
         if(args['Formato TIFF'] == True):
