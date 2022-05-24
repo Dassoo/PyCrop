@@ -14,7 +14,8 @@ Features:
  - Image rotation according to the scanner type
  - Image custom quality compression
  - Color profile application (.pp3)
- - White balancing (greyscale method)
+ - White balancing (auto + manual methods)
  - Json metadata export
+ - Image deskew (soon)
 
 "Sample_images" contains some JPGs that can be used for testing the software, while the "examples" folder shows a comparison before-after the whitebalancing.
