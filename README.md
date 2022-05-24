@@ -16,7 +16,3 @@ Features:
  - Color profile application (.pp3)
  - White balancing (greyscale method)
  - Json metadata export
-
-![alt text](https://github.com/Dassoo/PyCrop/blob/master/examples/AVSEG-D038-001-recto.jpg?raw=true)
-
-![alt text](https://github.com/Dassoo/PyCrop/blob/master/examples/corrected.jpg?raw=true)
