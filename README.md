@@ -1,5 +1,5 @@
 # PyCrop
-Images post-production app for Fondazione Giorgio Cini - Venezia (ARCHiVe Center)
+Images post-production app made in Python for Fondazione Giorgio Cini - Venezia (ARCHiVe Center)
 
 Required libraries:
  - OpenCV (cv2)
