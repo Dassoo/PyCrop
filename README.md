@@ -14,7 +14,7 @@ Features:
  - Image rotation according to the scanner type
  - Image custom quality compression
  - Color profile application (.pp3)
- - White balancing (auto + manual methods)
+ - White balancing (auto + manual methods through PHP scripts)
  - Json metadata export
  - Image deskew (soon)
 
