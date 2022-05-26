@@ -16,6 +16,7 @@ Features:
  - Color profile application (.pp3)
      - RawTherapee installation is required for this: https://www.rawtherapee.com/
  - White balancing (auto + manual methods through PHP scripts)
+     - RGB acquisition for this step is available through the "colorpicker.py" script
  - Json metadata export
  - Image deskew (soon)
 
