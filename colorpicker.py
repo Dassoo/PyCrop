@@ -4,7 +4,7 @@ from gooey import Gooey, GooeyParser
 import pyperclip
 import os
 
-
+# -- obsolete
 def pickerRGB(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:  # checks mouse moves
         colorsBGR = image[y, x]
@@ -24,9 +24,9 @@ def conversion(path):
 # -- inizializzazione Gooey
 @Gooey(
     program_name='Color Checker',       # Defaults to script name
-    default_size=(550, 400),   # starting size of the GUI
+    default_size=(500, 350),   # starting size of the GUI
     required_cols=1,           # number of columns in the "Required" section
-    optional_cols=2,           # number of columns in the "Optional" section
+    optional_cols=1,           # number of columns in the "Optional" section
     clear_before_run=True,
     show_stop_warning=True,
     show_failure_modal=True,
@@ -44,12 +44,12 @@ def main():
     # -- Required parameters section
     fprocessing = subs.add_parser(
         "aaa", prog="aaa",
-    ).add_argument_group("Parametri obbligatori")
+    ).add_argument_group("")
 
     fprocessing.add_argument(
         "inputImg",
         metavar="Color checker",
-        help="Seleziona il file da esplorare, premi ESC per uscire dal visualizzatore",
+        help="Seleziona il file da esplorare, premi ESC per uscire dal visualizzatore (valori RGB visibili nella parte inferiore del viewer)",
         widget="FileChooser"
     )
 
