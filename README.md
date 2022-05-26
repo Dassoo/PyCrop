@@ -14,7 +14,7 @@ Features:
  - Image rotation according to the scanner type
  - Image custom quality compression
  - Color profile application (.pp3)
-     - RawTherapee is required for the color profile application: https://www.rawtherapee.com/
+     - RawTherapee installation is required for this: https://www.rawtherapee.com/
  - White balancing (auto + manual methods through PHP scripts)
  - Json metadata export
  - Image deskew (soon)
