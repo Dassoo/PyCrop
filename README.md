@@ -20,4 +20,4 @@ Features:
  - Json metadata export
  - Image deskew (soon)
 
-"Sample_images" contains some JPGs that can be used for testing the software, while the "examples" folder shows a comparison before-after the whitebalancing.
+"Sample_images" contains some JPGs that can be used for testing the software, while the "examples" folder shows a comparison before-after the processing (image quality has been lowered due to smaller size and easier upload).
