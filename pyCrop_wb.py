@@ -68,7 +68,7 @@ def tiffExport(inputPath, outputPath, outputFilename):
 
 # -- bilanciamento del bianco
 def white_balance(img, whiteBalance):
-    # -- bilanciamento automatico
+    # -- bilanciamento automatico (nel caso non vengano fatti riferimenti mirati ad un colore su color chart)
     if(whiteBalance == None):
         os.system('./autowhite '+img+' '+img)
     # -- bilanciamento manuale (inserimento valore bianco rgb da bilanciare rispetto al bianco puro)
@@ -308,7 +308,6 @@ def reFolder(inputPath, outputPath, outputFilename, cpPath):
                 'message': '1) Per iniziare scegli l\'applicazione da utilizzare: Piano aspirato (rotazione 90 gradi), V-Scanner (le pagine dei libri si aggiusteranno in modo corretto in base al loro prefisso del nome file, "Left" e "Right") o Other (nessuna rotazione). \n\n2) Inserisci il percorso di input, da dove prendere le immagini da processare, poi il percorso di output nello spazio sottostante, dove vuoi salvare i risultati. \n\n3) Seleziona il formato di esportazione delle immagini, il quale potrà essere JPG e/o TIFF in base alle esigenze. Per quanto riguarda il formato JPG è disponibile una compressione immagine nella barra sottostante, in modo da poter ridurre le dimensioni sul disco delle immagini. \n\n4) Oltre a ciò, nei parametri facoltativi, esiste la possibilità di inserire un profilo colore (se hai un file .pp3 da applicare) ed effettuare un taglio personalizzato alle immagini, aggiungendo o rimuovendo spazio (inserendo valori positivi o negativi) nella direzione desiderata. \n\nUna sezione di debug, che permette all\'utente di controllare la funzionalità e l\'identificazione immagine durante la fase di processo, è disponibile sul fondo dell\'applicazione.'
             }]
     }],
-    image_dir='/home/swarchive/Scrivania/federico/pyCrop/icons',
     required_cols=1,           # number of columns in the "Required" section
     optional_cols=2,           # number of columns in the "Optional" section
     clear_before_run=True,
@@ -333,7 +332,7 @@ def main():
     r_padding = ''
     # -- formato di esportazione
     exportFormat = ''
-    # -- bilanciamento bianco
+    # -- rgb bilanciamento bianco
     whiteBalance = ''
     # -- parametro qualità immagini
     imgQuality = 0
