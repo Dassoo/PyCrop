@@ -44,7 +44,7 @@ Install RawTherapee: https://www.rawtherapee.com/
 Run 
 
 ```bash
-  python3 pyCrop_yourOSversion.py
+  python pyCrop_yourOSversion.py
 ```
 
 
