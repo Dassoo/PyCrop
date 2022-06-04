@@ -56,6 +56,11 @@ Run the right OS version of the app
 
 Creating a dedicated output folder is recommended.
 
+You can access the colorpicker script to take the white RGB for the whitebalancing given an image
+
+```bash
+  python colorpicker.py
+```
 
 ## Screenshots
 
