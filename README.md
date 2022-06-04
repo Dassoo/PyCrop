@@ -1,6 +1,8 @@
 # PyCrop
 Images post-production app made in Python for Fondazione Giorgio Cini - Venezia (ARCHiVe Center)
 
+NOTE: There are 2 different versions of the app, according to your operating system (Linux/Windows). Both are still work in progress, especially the latter one.
+
 Required libraries:
  - OpenCV (cv2)
  - Pillow
