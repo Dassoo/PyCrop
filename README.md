@@ -41,6 +41,12 @@ Install dependencies
 
 Install RawTherapee: https://www.rawtherapee.com/
 
+Run 
+
+```bash
+  python3 pyCrop_yourOSversion.py
+```
+
 
 ## Usage/Examples
 
