@@ -62,6 +62,9 @@ You can access the colorpicker script to take the white RGB for the whitebalanci
   python colorpicker.py
 ```
 
+To use the color profile section, you must have a generated .pp3 file (you can create a custom/test one with RawTherapee, if you already don't have one).
+
+
 ## Screenshots
 
 ### Before
