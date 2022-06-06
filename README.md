@@ -15,7 +15,7 @@ Images post-production app made in Python for Fondazione Giorgio Cini - Venezia 
 
 ## Installation
 
-NOTE: There are 2 different versions of the app, according to your operating system (Linux/Windows). Both are still work in progress, especially the latter one.
+NOTE: There are 2 different versions of the app, according to your operating system (Linux/Windows). Both are still work in progress, especially the latter one (color profile and whitebalance are WIP on Windows).
 
 Clone the project
 
