@@ -64,19 +64,19 @@ You can access the colorpicker script to take the white RGB for the whitebalanci
 
 ## Screenshots
 
-<img align="left" width="480" src="https://github.com/Dassoo/PyCrop/blob/master/examples/source1.jpg">
-<img align="right" width="480" src="https://github.com/Dassoo/PyCrop/blob/master/examples/result1.jpg">
+### Before
+![source1](https://github.com/Dassoo/PyCrop/blob/master/examples/source1.jpg)
+### After
+![result1](https://github.com/Dassoo/PyCrop/blob/master/examples/result1.jpg)
 
-<img align="left" width="480" src="https://github.com/Dassoo/PyCrop/blob/master/examples/source2.jpg">
-<img align="right" width="480" src="https://github.com/Dassoo/PyCrop/blob/master/examples/result2.jpg">
-
-<img align="left" width="480" src="https://github.com/Dassoo/PyCrop/blob/master/examples/source3.jpg">
-<img align="right" width="480" src="https://github.com/Dassoo/PyCrop/blob/master/examples/result3.jpg">
-
+### Before
 ![source2](https://github.com/Dassoo/PyCrop/blob/master/examples/source2.jpg)
+### After
 ![result2](https://github.com/Dassoo/PyCrop/blob/master/examples/result2.jpg)
 
+### Before
 ![source3](https://github.com/Dassoo/PyCrop/blob/master/examples/source3.jpg)
+### After
 ![result3](https://github.com/Dassoo/PyCrop/blob/master/examples/result3.jpg)
 
 
