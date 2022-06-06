@@ -69,10 +69,14 @@ You can access the colorpicker script to take the white RGB for the whitebalanci
 ### After
 ![result1](https://github.com/Dassoo/PyCrop/blob/master/examples/result1.jpg)
 
+---
+
 ### Before
 ![source2](https://github.com/Dassoo/PyCrop/blob/master/examples/source2.jpg)
 ### After
 ![result2](https://github.com/Dassoo/PyCrop/blob/master/examples/result2.jpg)
+
+---
 
 ### Before
 ![source3](https://github.com/Dassoo/PyCrop/blob/master/examples/source3.jpg)
