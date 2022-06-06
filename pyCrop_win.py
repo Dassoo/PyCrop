@@ -232,7 +232,7 @@ def cpApplication(inputPath, outputPath, cpPath, exportFormat):
         print('Applicazione profilo colore...')
         # -- applicazione profilo colore
         # -- '-o' = output; '-p' = color profile; '-Y' = force processing (sovrascrivi); '-c' = input
-        os.system('rawtherapee-cli -o '+outputPath+'\jpg_export -p '+cpPath+' -Y -c '+outputPath+'\cropped')
+        os.system('rawtherapee-cli -o '+outputPath+'\\jpg_export -p '+cpPath+' -Y -c '+outputPath+'\\cropped')
 
         print('Profilo colore applicato con successo!')
         print(' ')
