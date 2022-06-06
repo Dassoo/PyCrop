@@ -613,9 +613,8 @@ def main():
         #if(args['Formato TIFF'] == False or len(os.listdir(outputPath+'\\tiff_export')) == 0):
         shutil.rmtree(outputPath+'\\tiff_export')
     except OSError as e:
-        print("Errore: %s - %s." % (e.filename, e.strerror))
-        logger.error(e)
-
+        pass
+    
     # -- apertura automatica cartella di output a fine esecuzione
     #if(exportFormat == '.tif'):
     os.system('xdg-open "%s"' % outputPath)
