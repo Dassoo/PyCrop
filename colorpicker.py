@@ -18,7 +18,7 @@ def click_data(event, x, y, flags, param):
     if counter >= 1:   
         print('> Difference from previous point: ',x-prev_point[0],',',y-prev_point[1])
     prev_point = [x,y]
-    colorsBGR = image[y, x]
+    colorsBGR = res_image[y, x]
     # reversing the OpenCV BGR format to RGB format
     colorsRGB = tuple(reversed(colorsBGR)) 
     print("> RGB Value: {}".format(colorsRGB))
@@ -73,19 +73,19 @@ if __name__ == "__main__":
 
         cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
         cv2.setMouseCallback('Image', click_data)
-        cv2.destroyAllWindows()
+        cv2.imshow('Image',res_image)
 
         # wait for ESC pressed before quitting
         while (1):
+            cv2.setMouseCallback('Image', click_data)
             cv2.imshow('Image',res_image)
             if cv2.waitKey(10) & 0xFF == 27:
                 break
-
-        cv2.destroyAllWindows()
-    
     except:
         pass
     
+    cv2.destroyAllWindows()
+
     # clean temporary conversions
     if(path.endswith('.CR2')):
         os.remove(path[:size-4]+'.jpg')
