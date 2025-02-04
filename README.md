@@ -79,12 +79,6 @@ To use the color profile section, you must have a generated .pp3 file (you can c
 ### After
 ![result2](https://github.com/Dassoo/PyCrop/blob/master/examples/result2.jpg)
 
----
-
-### Before
-![source3](https://github.com/Dassoo/PyCrop/blob/master/examples/source3.jpg)
-### After
-![result3](https://github.com/Dassoo/PyCrop/blob/master/examples/result3.jpg)
 
 
 
